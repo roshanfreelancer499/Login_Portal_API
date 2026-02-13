@@ -19,7 +19,7 @@
     "url": "https://github.com/roshanfreelancer499/Login_Portal_API/issues"
   },
   "homepage": "https://github.com/roshanfreelancer499/Login_Portal_API#readme",
-  "dependencies": {
-    "express": "^5.2.1"
+  "devDependencies": {
+    "@types/express": "^5.0.6"
   }
 }
