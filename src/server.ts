@@ -2,10 +2,13 @@ import express from "express";
 import path from "path";
 import SwaggerMiddlewareConfig from "./middleware/swagger";
 import authRouter from "./routers/auth.router";
+import dbConfig from "./config/db.config";
 
 const app = express();
 
-app.use("/api/auth", authRouter);
+app.use(express.json())
+app.use(express.static("public"));
+SwaggerMiddlewareConfig.setUp(app);
 
 /* Serve swagger.json */
 app.get(
@@ -13,9 +16,15 @@ app.get(
   express.static(path.resolve(process.cwd(), "public"))
 );
 
-/* Setup Swagger */
-SwaggerMiddlewareConfig.setUp(app);
+app.use("/api/auth", authRouter);
 
-app.listen(8000, () => {
-  console.log("Server running on port 8000");
+
+/* Setup Swagger */
+
+dbConfig.initialize().then(() => {
+  app.listen(8000, () => {
+    console.log("Server running on port 8000");
+  });
+}).catch((err) => {
+  console.log('Failed to initialize the db', err);
 });

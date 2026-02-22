@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import Joi from 'Joi';
+import Joi from 'joi';
 
 export class Validation {
     public static run(schema: Joi.Schema, query: 'body' | 'query' | 'params') {
