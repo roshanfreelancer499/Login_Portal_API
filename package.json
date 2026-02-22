@@ -4,8 +4,7 @@
   "description": "login portal to authorise the user",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node src/server.ts"
+    "dev": "nodemon src/server.ts"
   },
   "repository": {
     "type": "git",
@@ -20,6 +19,11 @@
   },
   "homepage": "https://github.com/roshanfreelancer499/Login_Portal_API#readme",
   "devDependencies": {
-    "@types/express": "^5.0.6"
+    "@types/express": "^5.0.6",
+    "@types/swagger-ui-express": "^4.1.8",
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "swagger-ui-express": "^5.0.1"
   }
 }
