@@ -1,23 +1,21 @@
 import express from "express";
 import path from "path";
-import SwaggerMiddlewareConfig from "./middleware/swagger.ts";
+import SwaggerMiddlewareConfig from "./middleware/swagger";
+import authRouter from "./routers/auth.router";
 
 const app = express();
 
-app.use(express.json());
+app.use("/api/auth", authRouter);
 
 /* Serve swagger.json */
-app.get("/swagger.json", (req, res) => {
-  res.sendFile(path.resolve(process.cwd(), "public/swagger.json"));
-});
+app.get(
+  "/swagger.json",
+  express.static(path.resolve(process.cwd(), "public"))
+);
 
-/* Setup swagger BEFORE routes */
+/* Setup Swagger */
 SwaggerMiddlewareConfig.setUp(app);
 
-app.get("/", (req, res) => {
-  res.send("Hello Express");
-});
-
 app.listen(8000, () => {
-  console.log("Server running at http://localhost:8000");
+  console.log("Server running on port 8000");
 });

@@ -1,4 +1,3 @@
-import express from "express";
 import type { Application } from "express";
 import swaggerUi from "swagger-ui-express";
 
