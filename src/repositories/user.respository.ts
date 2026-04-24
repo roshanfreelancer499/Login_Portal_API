@@ -2,14 +2,15 @@ import { Service } from "typedi";
 import dbConfig from "../config/db.config";
 import User from "../entities/user.entity";
 import * as bcrypt from "bcrypt";
-import { CreateUser } from "../models/interfaces/user";
+import { CreateUser, LoginUser } from "../models/interfaces/user";
+import { ApiError } from "../models/api-error";
 
 @Service()
 
 export class UserRepository {
     private userRepository = dbConfig.getRepository(User);
 
-    async createUser(userDetails: CreateUser): Promise<User> {
+    async createUser(userDetails: CreateUser): Promise<LoginUser> {
         console.log('first', userDetails);
         
         await this.isUserExist(userDetails);
@@ -19,7 +20,7 @@ export class UserRepository {
         return this.userRepository.save(userDetails);
     };
 
-    async isUserExist(userDetails: CreateUser): Promise<void> {
+    async isUserExist(userDetails: CreateUser): Promise<boolean> {
         const userExist = await this.userRepository.findOne({
             where: [
                 { email: userDetails.email },
@@ -36,11 +37,28 @@ export class UserRepository {
                 throw (`User already exist with phone number ${userDetails.phoneNumber}`)
             };
         }
-        console.log('checking', userDetails);
-        
+
+        return !!userExist;
     };
     
     async encriptPassword(password: string): Promise<string> {
         return await bcrypt.hash(password, 10)
     };
+
+    async verifyPassword(inputPassword: string, storedPassword: string): Promise<boolean> {
+        return bcrypt.compare(inputPassword, storedPassword);
+    }
+
+    async loginUser(userEmail: string, userPassword: string): Promise<LoginUser> {
+        const isUserExist = await this.userRepository.createQueryBuilder('user')
+                            .addSelect('user.password')
+                            .where('user.email =:email', {email: userEmail})
+                            .getOne();
+        if (!isUserExist) throw new ApiError("exse", "User Not Found Please Check Credentials");
+
+        const isPassMatched = await this.verifyPassword(userPassword, isUserExist.password);
+        if (!isPassMatched) throw("Incorrect Password Please Check the Password");
+        const {password, ...loggedUser} = isUserExist;
+        return loggedUser;
+    }
 }

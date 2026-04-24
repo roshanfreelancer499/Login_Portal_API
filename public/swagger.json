@@ -7,7 +7,7 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"User": {
+			"LoginUser": {
 				"properties": {
 					"userId": {
 						"type": "string"
@@ -22,9 +22,6 @@
 						"type": "string"
 					},
 					"email": {
-						"type": "string"
-					},
-					"password": {
 						"type": "string"
 					},
 					"phoneNumber": {
@@ -45,6 +42,18 @@
 						"format": "date-time"
 					}
 				},
+				"required": [
+					"userId",
+					"firstName",
+					"lastName",
+					"fullName",
+					"email",
+					"phoneNumber",
+					"address",
+					"isActive",
+					"createdDate",
+					"updatedDate"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -106,7 +115,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/User"
+									"$ref": "#/components/schemas/LoginUser"
 								}
 							}
 						}
@@ -165,6 +174,50 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/api/auth/login": {
+			"post": {
+				"operationId": "LoginUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LoginUser"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"password",
+									"email"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

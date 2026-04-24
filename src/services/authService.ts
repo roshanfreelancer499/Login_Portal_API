@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { UserRepository } from "../repositories/user.respository";
-import { CreateUser } from "../models/interfaces/user";
+import { CreateUser, LoginUser } from "../models/interfaces/user";
 import User from "../entities/user.entity";
 
 @Service()
@@ -8,7 +8,11 @@ import User from "../entities/user.entity";
 export class AuthService {
     constructor(private userRepo: UserRepository) {}
 
-    createUser(userDetails: CreateUser): Promise<User> {
+    createUser(userDetails: CreateUser): Promise<LoginUser> {
         return this.userRepo.createUser(userDetails);
-    }
+    };
+
+    loginUser(email: string, password: string): Promise<LoginUser> {
+       return this.userRepo.loginUser(email, password);
+    };
 }
