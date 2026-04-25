@@ -18,7 +18,7 @@ export class AuthMiddleware {
                 const secretKey = 'abckderkdsfsdfdsfasdfsdf';
                 const decoded: any = jwt.verify(token, secretKey);    
                 
-                const user = [{id: 1}];
+                const user = {userId: decoded.userId, roleId: decoded.roleId};
                 if (!user) {
                   return res.status(401).json({ message: 'Unauthorized' });
                 }

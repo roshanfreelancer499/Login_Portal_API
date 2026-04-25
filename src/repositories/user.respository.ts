@@ -64,11 +64,12 @@ export class UserRepository {
         const accessToken = 'abckderkdsfsdfdsfasdfsdf'
         return jwt.sign(
             {
-                userId: user.userId
+                userId: user.userId,
+                roleId: 1
             },
             accessToken,
             {
-                expiresIn: '30s'
+                expiresIn: '15m'
             }
         )
     };
