@@ -4,7 +4,7 @@
   "description": "login portal to authorise the user",
   "main": "index.js",
   "scripts": {
-    "tsoa": "tsoa spec && tsoa routes",
+    "tsoa": "tsoa spec",
     "dev": "npm run tsoa && nodemon src/server.ts"
   },
   "repository": {
@@ -22,6 +22,7 @@
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.1.11"
   },
@@ -29,6 +30,7 @@
     "bcrypt": "^6.0.0",
     "express": "^5.2.1",
     "joi": "^18.0.2",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.17.4",
     "swagger-ui-express": "^5.0.1",
     "tsoa": "^7.0.0-alpha.0",

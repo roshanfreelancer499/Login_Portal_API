@@ -4,6 +4,7 @@ import User from "../entities/user.entity";
 import * as bcrypt from "bcrypt";
 import { CreateUser, LoginUser } from "../models/interfaces/user";
 import { ApiError } from "../models/api-error";
+import jwt from "jsonwebtoken";
 
 @Service()
 
@@ -11,12 +12,8 @@ export class UserRepository {
     private userRepository = dbConfig.getRepository(User);
 
     async createUser(userDetails: CreateUser): Promise<LoginUser> {
-        console.log('first', userDetails);
-        
         await this.isUserExist(userDetails);
         userDetails.password = await this.encriptPassword(userDetails.password);
-        console.log('second', userDetails);
-        
         return this.userRepository.save(userDetails);
     };
 
@@ -58,7 +55,25 @@ export class UserRepository {
 
         const isPassMatched = await this.verifyPassword(userPassword, isUserExist.password);
         if (!isPassMatched) throw("Incorrect Password Please Check the Password");
+        const token = this.generateJWTTokern(isUserExist);
         const {password, ...loggedUser} = isUserExist;
-        return loggedUser;
-    }
+        return {...loggedUser, token};
+    };
+
+    generateJWTTokern(user: LoginUser): string {
+        const accessToken = 'abckderkdsfsdfdsfasdfsdf'
+        return jwt.sign(
+            {
+                userId: user.userId
+            },
+            accessToken,
+            {
+                expiresIn: '30s'
+            }
+        )
+    };
+
+    getAllUsers(): Promise<User[]> {
+        return this.userRepository.findBy({isActive: true})
+    };
 }

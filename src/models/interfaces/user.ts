@@ -1,17 +1,3 @@
-// export interface User {
-//     userId: string;
-//     firstName: string;
-//     lastName: string;
-//     fullName: string;
-//     email: string;
-//     password: string;
-//     phoneNumber: string;
-//     address: string;
-//     isActive: boolean;
-//     createdDate: Date;
-//     updateDate: Date;
-// };
-
 export interface CreateUser {
     firstName: string;
     lastName: string;
@@ -30,6 +16,7 @@ export interface LoginUser {
     email: string;
     phoneNumber: string;
     address: string;
+    token?: string;
     isActive: boolean;
     createdDate: Date;
     updatedDate: Date;

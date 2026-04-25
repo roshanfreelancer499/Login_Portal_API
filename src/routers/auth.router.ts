@@ -8,16 +8,7 @@ import { UserSchema } from "../models/joi-schemas/createuser";
 const authRouter = Express.Router()
 const authController = Container.get(AuthController);
 
-authRouter.get('/', async (req, res) => {
-    try {
-        const users = authController.getUsers();
-        res.status(200).send(users)
-    } catch (error: any) {
-        console.error(error?.message)
-    }
-});
-
-authRouter.post('/register', Validation.run(UserSchema.create(), 'body'), async (req, res) => {
+authRouter.post('/register', Validation.run(UserSchema.create(), 'body'), async (req, res, next) => {
     try {
         const userDetails = req.body;
         const result = await authController.createUser(userDetails);
@@ -25,17 +16,19 @@ authRouter.post('/register', Validation.run(UserSchema.create(), 'body'), async 
             message: 'User Registered Successfully',
             userDetails: result,
         })
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        console.log(error?.message);
+        next(new ApiError('Auth.register', error?.message));
     }
 });
 
 authRouter.post("/login", Validation.run(UserSchema.login(), 'body'), async (req, res, next) => {
     try {
-        const isUserExist = await authController.loginUser(req.body);
-        res.status(200).send({
+          const {token, ...loggedUser} = await authController.loginUser(req.body);
+            res.status(200).send({
             message: "Login Success",
-            user: isUserExist
+            user: loggedUser,
+            token
         });
     } catch (error: any) {
         console.error(error?.message);

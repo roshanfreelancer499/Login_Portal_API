@@ -3,6 +3,8 @@ import path from "path";
 import SwaggerMiddlewareConfig from "./middleware/swagger";
 import authRouter from "./routers/auth.router";
 import dbConfig from "./config/db.config";
+import userRouter from "./routers/user.router";
+import { AuthMiddleware } from "./middleware/auth.middleware";
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.get(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api/users", AuthMiddleware.setup(), userRouter);
 
 
 /* Setup Swagger */

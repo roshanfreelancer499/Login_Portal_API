@@ -15,14 +15,6 @@ export default class AuthController {
     return await this.authService.createUser(userDetails);
   };
 
-  @Get("/")
-  public getUsers() {
-    return [
-      { id: 1, name: "Roshan" },
-      { id: 2, name: "John" }
-    ];
-  };
-
   @Post("/login")
   public async loginUser(@Body() loginUser: {email: string, password: string}): Promise<LoginUser> {
     return await this.authService.loginUser(loginUser.email, loginUser.password);
